@@ -1,54 +1,64 @@
-# Swizzle AI
-
 <div align="center">
 
-### Inference that remembers what it already read.
+<img src="https://raw.githubusercontent.com/Swizzle-AI/.github/main/assets/swizzle_org_banner.jpg" alt="Swizzle AI Architectural Banner" width="100%" />
 
-**Sub-40ms cached TTFT · Zero shared-memory bank conflicts · 10× cheaper prefix billing**
+<br />
 
-[![Live Platform](https://img.shields.io/badge/Live_Platform-swizzle--ten.vercel.app-c9ff3b?style=for-the-badge&logo=vercel&logoColor=black)](https://swizzle-ten.vercel.app)
-[![Student Robotics Playground](https://img.shields.io/badge/Robotics_%26_World_Models-Student_Playground_(80.5_Hz)-00E676?style=for-the-badge)](https://swizzle-ten.vercel.app/#student-playground)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge)](LICENSE)
+<img src="https://raw.githubusercontent.com/Swizzle-AI/swizzle-runtime/main/assets/swizzle_avatar.svg" alt="Swizzle AI Logo" width="72" />
 
----
+# Swizzle AI
+
+### *Inference that remembers what it already read.*
+
+**Sub-40ms cached TTFT · Zero shared-memory bank conflicts · Verifiable Ed25519 receipts**
+
+[![Swizzle Runtime v0.1.0](https://img.shields.io/badge/Swizzle_Runtime-v0.1.0_(Rust_%2B_CUDA)-c9ff3b?style=for-the-badge&logo=rust&logoColor=black)](https://github.com/Swizzle-AI/swizzle-runtime)
+[![Live Platform](https://img.shields.io/badge/Live_Platform-swizzle--ten.vercel.app-06120d?style=for-the-badge&logo=vercel&logoColor=c9ff3b)](https://swizzle-ten.vercel.app)
+[![Student Robotics Playground](https://img.shields.io/badge/Robotics_Playground-80.5_Hz-00E676?style=for-the-badge)](https://swizzle-ten.vercel.app/#student-playground)
+[![Twitter Follow](https://img.shields.io/badge/@Swizzler112-1DA1F2?style=for-the-badge&logo=x&logoColor=white)](https://x.com/Swizzler112)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge)](https://github.com/Swizzle-AI/swizzle-runtime/blob/main/LICENSE)
 
 </div>
 
-## 🌐 The Swizzle Open-Source Ecosystem
+---
 
-Swizzle AI is a modular, high-performance inference ecosystem engineered specifically for autonomous coding agents, heavy reasoning LLMs, and real-time robotics world models.
+## 🌐 Ecosystem Architecture
 
-```text
-                                  ┌──────────────────────────┐
-                                  │   Client Applications    │
-                                  │ (Cursor, Claude, Robots) │
-                                  └─────────────┬────────────┘
-                                                │
-                                                ▼
-                                  ┌──────────────────────────┐
-                                  │     swizzle-gateway      │
-                                  │ (Go L7 Reverse Proxy)    │
-                                  │ • Dual Wire (OpenAI/Anth)│
-                                  │ • AST-Diff Prefix Ledger │
-                                  └─────────────┬────────────┘
-                                                │
-                     ┌──────────────────────────┴──────────────────────────┐
-                     ▼                                                     ▼
-       ┌───────────────────────────┐                         ┌───────────────────────────┐
-       │      swizzle-router       │                         │          swizzle          │
-       │ (Semantic Router & Vector)│                         │ (Core Engine & Scheduler) │
-       │ • Matryoshka Embeddings   │                         │ • Continuous Batching     │
-       │ • Warm Cache Dispatch     │                         │ • Paged KV Block Manager  │
-       └───────────────────────────┘                         └─────────────┬─────────────┘
-                                                                           │
-                                                                           ▼
-                                                             ┌───────────────────────────┐
-                                                             │      swizzle-kernels      │
-                                                             │ (Hardware Fused Kernels)  │
-                                                             │ • XOR Attention (0 Banks) │
-                                                             │ • Speculative Verify Tile │
-                                                             │ • TPU Pallas VMEM Kernel  │
-                                                             └───────────────────────────┘
+Swizzle AI is an open-source inference stack built for **local edge GPUs, autonomous coding agents, and real-time robotics world models**.
+
+```mermaid
+flowchart TB
+    subgraph Clients["Client Applications & Agents"]
+        C1["Coding Agents (Continue, Aider, Cursor, Claude)"]
+        C2["Robotics & World Models (80.5 Hz Control Loop)"]
+        C3["OpenAI / Ollama / Anthropic SDKs"]
+    end
+
+    subgraph Edge["Control Plane & Semantic Routing"]
+        GW["swizzle-gateway (Go L7 Proxy)<br/>Dual Wire (OpenAI + Anthropic) · AST-Diff Prefix Ledger"]
+        RT_R["swizzle-router (Semantic Router)<br/>Matryoshka Embeddings · Warm Cache Dispatch"]
+    end
+
+    subgraph Execution["Inference Engines & Hardware Kernels"]
+        SRT["swizzle-runtime (swizzle-rt)<br/>Pure Rust · RAD-1 Speculative · Warm Start · Ed25519 Receipts"]
+        SWZ["swizzle (Control Plane & Scheduler)<br/>Continuous Batching · Paged KV · PD Disaggregation"]
+        KRN["swizzle-kernels<br/>XOR SMEM Tiling (0 Bank Conflicts) · CUDA / Vulkan / AVX2 / Pallas"]
+    end
+
+    C1 --> GW
+    C2 --> GW
+    C3 --> GW
+    GW --> RT_R
+    GW --> SWZ
+    RT_R --> SRT
+    SWZ --> SRT
+    SRT --> KRN
+    SWZ --> KRN
+
+    style Clients fill:#0b1c14,stroke:#335243,color:#f0fdf4
+    style Edge fill:#0b1c14,stroke:#4c7863,color:#f0fdf4
+    style Execution fill:#06120d,stroke:#c9ff3b,color:#f0fdf4
+    style SRT fill:#102a1d,stroke:#c9ff3b,color:#c9ff3b
 ```
 
 ---
@@ -57,31 +67,35 @@ Swizzle AI is a modular, high-performance inference ecosystem engineered specifi
 
 | Repository | Description | Stack | Status |
 | :--- | :--- | :--- | :--- |
-| **[`swizzle`](https://github.com/Swizzle-AI/swizzle)** | Core continuous batching inference engine, AST-diff virtual paging, speculative decoding, and prefill-decode disaggregation. | Python, C++, PyTorch | **Main Engine** |
-| **[`swizzle-gateway`](https://github.com/Swizzle-AI/swizzle-gateway)** | Ultra-low latency (<1ms) L7 reverse proxy supporting both OpenAI (`/v1/chat/completions`) and Anthropic (`/v1/messages`) wire protocols. | Go 1.22+ | **Active** |
-| **[`swizzle-kernels`](https://github.com/Swizzle-AI/swizzle-kernels)** | Hardware-roofline fused mega-kernels: XOR shared-memory bank conflict elimination, speculative verification, and TPU v5e Pallas VMEM attention. | CUDA C++, Triton, JAX/Pallas | **High Performance** |
-| **[`swizzle-router`](https://github.com/Swizzle-AI/swizzle-router)** | Semantic intent router, domain-adapted Matryoshka embedding pipelines, and prefix-affinity multi-cluster load balancing. | Python, PyTorch | **Active** |
-| **[`swizzle-python-sdk`](https://github.com/Swizzle-AI/swizzle-python-sdk)** | Official Python client library (`pip install swizzle-ai`) with automatic speculative stream unpacking and robotics telemetry. | Python | **v0.3.0** |
-| **[`swizzle-robotics`](https://github.com/Swizzle-AI/swizzle-robotics)** | Real-time robotics world models, 80.5 Hz visual servoing, 50Hz quintic spline smoothing, and Student Robotics Playground. | Python, React, WebRTC | **Production** |
+| **[`swizzle-runtime`](https://github.com/Swizzle-AI/swizzle-runtime)** | Pure-Rust GGUF local inference engine (`swizzle-rt`) with AVX2, CUDA (`sm_75`–`sm_120`), Vulkan, RAD-1 speculative decoding, and Ed25519 receipts. | Rust, CUDA, Vulkan | **v0.1.0 Live** |
+| **[`swizzle`](https://github.com/Swizzle-AI/swizzle)** | Core continuous batching engine, AST-diff virtual paging (`Swizzle-Tree`), speculative decoding, and prefill-decode disaggregation. | Python, C++, PyTorch | **Main Engine** |
+| **[`swizzle-gateway`](https://github.com/Swizzle-AI/swizzle-gateway)** | Sub-millisecond L7 reverse proxy supporting OpenAI (`/v1/chat/completions`) and Anthropic (`/v1/messages`) wire protocols. | Go 1.22+ | **Active** |
+| **[`swizzle-kernels`](https://github.com/Swizzle-AI/swizzle-kernels)** | Hardware-roofline fused mega-kernels: XOR shared-memory bank conflict elimination, speculative verification, and TPU Pallas VMEM attention. | CUDA C++, Triton, JAX | **High Performance** |
+| **[`swizzle-router`](https://github.com/Swizzle-AI/swizzle-router)** | Semantic intent router, Matryoshka embedding pipelines, and prefix-affinity multi-cluster load balancing. | Python, PyTorch | **Active** |
+| **[`swizzle-python-sdk`](https://github.com/Swizzle-AI/swizzle-python-sdk)** | Official Python client library (`pip install swizzle-ai`) with speculative stream unpacking and robotics telemetry. | Python | **v0.3.0** |
+| **[`swizzle-robotics`](https://github.com/Swizzle-AI/swizzle-robotics)** | Real-time robotics world models, 80.5 Hz visual servoing, 50 Hz quintic spline smoothing, and Student Robotics Playground. | Python, React, WebRTC | **Production** |
 
 ---
 
-## ⚡ The 3 Core Pillars
+## 📊 Verified Local Inference Benchmarks (`swizzle-rt v0.1.0`)
 
-1. **`Swizzle-Draft` (Speculative Decoding)**: In-memory Prompt-Trie N-gram lookahead operating at the edge paired with parallel forward verification on the worker ($98.7	ext{ tok/s}$, $2.76	imes$ speedup).
-2. **`Swizzle-Tree` (AST-Diff Virtual Paging)**: Syntactic semantic block decomposition packs unchanged AST functions into a contiguous warm prefix, achieving **$89.6\%$ KV cache reuse** (vs $48\%$ linear).
-3. **`Swizzle-PD` (Prefill-Decode Disaggregation)**: Dedicated H100 prefill compute decoupled from A100/MI300X decode nodes over $100	ext{ GB/s}$ RoCEv2/InfiniBand RDMA ($99.9\%$ ITL jitter drop).
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Swizzle-AI/swizzle-runtime/main/assets/swizzle_benchmark_comparison.png" alt="Swizzle Runtime vs llama.cpp Benchmark Comparison" width="100%" />
+</p>
 
 ---
 
-## 🚀 Getting Started
+## ⚡ Quick Start
 
-* **Explore the Live Platform**: [https://swizzle-ten.vercel.app](https://swizzle-ten.vercel.app)
-* **Student Robotics Playground**: [https://swizzle-ten.vercel.app/#student-playground](https://swizzle-ten.vercel.app/#student-playground)
-* **Install Python SDK**:
-  ```bash
-  pip install swizzle-ai
+* **One-Command Install (`swizzle-rt` Linux x86_64 CUDA 12.8)**:
+  ```sh
+  curl -fsSL https://raw.githubusercontent.com/Swizzle-AI/swizzle-runtime/main/install.sh | sh
   ```
+* **Run via Docker (GHCR)**:
+  ```sh
+  docker run --rm -p 8080:8080 -v "$PWD/models:/models:ro" ghcr.io/swizzle-ai/swizzle-runtime:latest /models/model.gguf
+  ```
+* **Python SDK & Live Platform**: `pip install swizzle-ai` · [swizzle-ten.vercel.app](https://swizzle-ten.vercel.app)
 
 ---
 
