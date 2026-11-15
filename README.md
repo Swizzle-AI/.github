@@ -7,6 +7,7 @@
 **Sub-40ms cached TTFT · Zero shared-memory bank conflicts · 10× cheaper prefix billing**
 
 [![Live Platform](https://img.shields.io/badge/Live_Platform-swizzle--ten.vercel.app-c9ff3b?style=for-the-badge&logo=vercel&logoColor=black)](https://swizzle-ten.vercel.app)
+[![Technical Report PDF](https://img.shields.io/badge/Technical_Report-28--Page_PDF_(SWZ--TR--2026--01)-c9ff3b?style=for-the-badge&logo=adobeacrobatreader&logoColor=black)](https://github.com/Swizzle-AI/swizzle-runtime/blob/main/docs/Swizzle_Runtime_Technical_Report.pdf)
 [![Student Robotics Playground](https://img.shields.io/badge/Robotics_%26_World_Models-Student_Playground_(80.5_Hz)-00E676?style=for-the-badge)](https://swizzle-ten.vercel.app/#student-playground)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg?style=for-the-badge)](LICENSE)
 
@@ -57,6 +58,7 @@ Swizzle AI is a modular, high-performance inference ecosystem engineered specifi
 
 | Repository | Description | Stack | Status |
 | :--- | :--- | :--- | :--- |
+| **[`swizzle-runtime`](https://github.com/Swizzle-AI/swizzle-runtime)** | Pure-Rust GGUF local inference engine (`swizzle-rt`) with AVX2, CUDA (`sm_75`–`sm_120`), Vulkan, RAD-1 speculative decoding, and [28-page Technical Report PDF](https://github.com/Swizzle-AI/swizzle-runtime/blob/main/docs/Swizzle_Runtime_Technical_Report.pdf). | Rust, CUDA, Vulkan | **v0.1.0 Live** |
 | **[`swizzle`](https://github.com/Swizzle-AI/swizzle)** | Core continuous batching inference engine, AST-diff virtual paging, speculative decoding, and prefill-decode disaggregation. | Python, C++, PyTorch | **Main Engine** |
 | **[`swizzle-gateway`](https://github.com/Swizzle-AI/swizzle-gateway)** | Ultra-low latency (<1ms) L7 reverse proxy supporting both OpenAI (`/v1/chat/completions`) and Anthropic (`/v1/messages`) wire protocols. | Go 1.22+ | **Active** |
 | **[`swizzle-kernels`](https://github.com/Swizzle-AI/swizzle-kernels)** | Hardware-roofline fused mega-kernels: XOR shared-memory bank conflict elimination, speculative verification, and TPU v5e Pallas VMEM attention. | CUDA C++, Triton, JAX/Pallas | **High Performance** |

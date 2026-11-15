@@ -13,6 +13,7 @@
 **Sub-40ms cached TTFT · Zero shared-memory bank conflicts · Verifiable Ed25519 receipts**
 
 [![Swizzle Runtime v0.1.0](https://img.shields.io/badge/Swizzle_Runtime-v0.1.0_(Rust_%2B_CUDA)-c9ff3b?style=for-the-badge&logo=rust&logoColor=black)](https://github.com/Swizzle-AI/swizzle-runtime)
+[![Technical Report PDF](https://img.shields.io/badge/Technical_Report-28--Page_PDF_(SWZ--TR--2026--01)-c9ff3b?style=for-the-badge&logo=adobeacrobatreader&logoColor=black)](https://github.com/Swizzle-AI/swizzle-runtime/blob/main/docs/Swizzle_Runtime_Technical_Report.pdf)
 [![Live Platform](https://img.shields.io/badge/Live_Platform-swizzle--ten.vercel.app-06120d?style=for-the-badge&logo=vercel&logoColor=c9ff3b)](https://swizzle-ten.vercel.app)
 [![Student Robotics Playground](https://img.shields.io/badge/Robotics_Playground-80.5_Hz-00E676?style=for-the-badge)](https://swizzle-ten.vercel.app/#student-playground)
 [![Twitter Follow](https://img.shields.io/badge/@Swizzler112-1DA1F2?style=for-the-badge&logo=x&logoColor=white)](https://x.com/Swizzler112)
@@ -78,6 +79,8 @@ flowchart TB
 ---
 
 ## 📊 Verified Local Inference Benchmarks (`swizzle-rt v0.1.0`)
+
+📄 **[Read the Full 28-Page Technical Report (`SWZ-TR-2026-01`, PDF)](https://github.com/Swizzle-AI/swizzle-runtime/blob/main/docs/Swizzle_Runtime_Technical_Report.pdf)** — First-principles derivations, coding decisions across all 10 Rust crates, XOR-swizzled Tensor-Core GEMM proofs (`gemm_swizzle(r, b) = b ^ ((r & 7) << 4)`), Cauchy-Schwarz + IEEE-754 `Shortlist` vocabulary screening bounds, `RAD-1` ensemble speculative decoding, and head-to-head hardware telemetry.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/Swizzle-AI/swizzle-runtime/main/assets/swizzle_benchmark_comparison.png" alt="Swizzle Runtime vs llama.cpp Benchmark Comparison" width="100%" />
