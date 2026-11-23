@@ -1,0 +1,6 @@
+# Swizzle AI Organization-Wide Funding Configuration
+github: [Paramveersingh-S]
+open_collective: swizzle-ai
+custom:
+  - "https://crowdfunding.lfx.linuxfoundation.org/projects/swizzle-ai"
+  - "https://github.com/Swizzle-AI/swizzle-runtime"
